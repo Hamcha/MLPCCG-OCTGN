@@ -20,7 +20,7 @@ def chkMultiplayer(args):
             fromName = args.fromGroups[0].name
         except IndexError:
             return
-        
+
         if args.player._id == 2:
             if card.controller == me and card.owner == me:
                 if toName != 'Table': #Any group not a Table, reset card to normal
@@ -39,7 +39,7 @@ def chkMultiplayer(args):
                     card.orientation = Rot0
                 elif fromName != 'Table':
                     card.orientation = Rot270
-    
+
 def autoAT(args):
     if me.getGlobalVariable("toggleAutoAT") == "True":
         #Prevent red errors from showing up if item is not found in the lists below
@@ -49,7 +49,7 @@ def autoAT(args):
             card = args.cards[0]
         except IndexError:
             return
-        
+
         type = card.properties["Type"]
         cardCost = card.properties["Cost"]
         cardReqPower = card.properties["PlayRequiredPower"]
@@ -61,7 +61,7 @@ def autoAT(args):
         secColorReqFailed = False
         triColorReqFailed = False
         playerCounters = me.counters['Actions'].value
-        
+
         #GUID for Action and Colour Counters
         Action = ("Action", "ec99fdcb-ffea-4658-8e8f-5dc06e93f6fd")
         LoyaltyCounter = ("Loyalty", "a875a876-5ce3-4879-9590-09fc5835b5f3")
@@ -70,34 +70,34 @@ def autoAT(args):
         MagicCounter = ("Magic", "d970ca6c-0a3d-4def-b0e1-b1e385902a34")
         GenerosityCounter = ("Generosity", "10d7e739-bed0-4cab-93dd-24215bb13948")
         KindnessCounter = ("Kindness", "f04f63b2-52e8-439f-86a2-bff887fab0cd")
-        
+
         Loyalty = 0
         Kindness = 0
         Honesty = 0
         Laughter = 0
         Magic = 0
         Generosity = 0
-        
+
         if type == 'Troublemaker': #setting cost for TMs
             intCardCost = 1
         elif cardCost == '': #For Manes, do not continue with this function
             return
         else:
             intCardCost = int(card.properties["Cost"])
-            
+
         if card.properties["Element"] != '': #Check if card is a friend
             cardPower = int(card.properties["Power"])
-        
-        
+
+
         if toName == 'Table' and fromName == 'Hand':
             if card.controller == me and card.owner == me:
-            
+
                 if cardReqElement != '':
                     #Capturing all face up friend cards on table for comparison
                     allCards = (card for card in table if card.isFaceUp == True and (card.properties["Type"] == 'Friend' or card.properties["Type"] == 'Mane Character' or card.properties["Type"] == 'Mane Character Boosted'))
                     for cards in allCards:
                         elementPower =  int(cards.properties["Power"]) + cards.markers[Action]
-                        
+
                         #Capture all colours for single, multicolored or tri-colored friend cards and add their powers
                         if cards.properties["Element"] != 'Multicolor':
                             if cards.properties["Element"] == 'Loyalty' or cards.markers[LoyaltyCounter] > 0:
@@ -125,7 +125,7 @@ def autoAT(args):
                                 Magic += elementPower
                             if cards.properties["MultiPrimaryElement"] == 'Generosity' or cards.markers[GenerosityCounter] > 0:
                                 Generosity += elementPower
-                            
+
                             if cards.properties["MultiSecondaryElement"] == 'Loyalty':
                                 Loyalty += elementPower
                             if cards.properties["MultiSecondaryElement"] == 'Kindness':
@@ -151,7 +151,7 @@ def autoAT(args):
                                 Magic += elementPower
                             if cards.properties["TriPrimaryElement"] == 'Generosity' or cards.markers[GenerosityCounter] > 0:
                                 Generosity += elementPower
-                            
+
                             if cards.properties["TriSecondaryElement"] == 'Loyalty':
                                 Loyalty += elementPower
                             if cards.properties["TriSecondaryElement"] == 'Kindness':
@@ -164,7 +164,7 @@ def autoAT(args):
                                 Magic += elementPower
                             if cards.properties["TriSecondaryElement"] == 'Generosity':
                                 Generosity += elementPower
-                                
+
                             if cards.properties["TriElement"] == 'Loyalty':
                                 Loyalty += elementPower
                             if cards.properties["TriElement"] == 'Kindness':
@@ -177,10 +177,10 @@ def autoAT(args):
                                 Magic += elementPower
                             if cards.properties["TriElement"] == 'Generosity':
                                 Generosity += elementPower
-                                
+
                     #Comparing card to see if it meet color req
                     intCardReqPower = int(card.properties["PlayRequiredPower"])
-                    
+
                     #For primary color req
                     if cardReqElement == 'Loyalty':
                         Loyalty -= cardPower #Remove the newly placed card on Table from the calculation
@@ -206,7 +206,7 @@ def autoAT(args):
                         Generosity -= cardPower
                         if Generosity < intCardReqPower:
                             priColorReqFailed = True
-                    
+
                     #For secondary color req
                     if cardSecondaryReqElement != '':
                         if cardSecondaryReqElement == 'Loyalty':
@@ -233,7 +233,7 @@ def autoAT(args):
                             Generosity -= cardPower
                             if Generosity < intCardReqPower:
                                 secColorReqFailed = True
-                                
+
                     #For tri color req
                     if cardTriReqElement != '':
                         if cardTriReqElement == 'Loyalty':
@@ -260,7 +260,7 @@ def autoAT(args):
                             Generosity -= cardPower
                             if Generosity < intCardReqPower:
                                 triColorReqFailed = True
-                    
+
                     #notify("Honesty: {}, Loyalty: {}, Generosity: {}, Magic: {}".format(Honesty, Loyalty, Generosity, Magic))
                     #notify("PriReqFailed: {}, SecReqFailed: {} triColorReqFailed: {}".format(priColorReqFailed, secColorReqFailed, triColorReqFailed))
                     if priColorReqFailed == True or secColorReqFailed == True or triColorReqFailed == True:
@@ -274,9 +274,9 @@ def autoAT(args):
                                 card.moveToTable(-33, 30)
                         else:
                             return
-                
+
                 checkPayable = playerCounters - intCardCost
-                                
+
                 if checkPayable < 0:
                     mute()
                     card.moveTo(me.hand)
@@ -288,7 +288,7 @@ def autoAT(args):
                             card.moveToTable(-33, 30)
                 else:
                     me.counters['Actions'].value = me.counters['Actions'].value - intCardCost
-            
+
 def autoRotateDilemma(args):
     mute()
     try:
@@ -297,14 +297,14 @@ def autoRotateDilemma(args):
         card = args.cards[0]
     except IndexError:
         return
-        
+
     traits = card.properties["Traits"]
     cardID = card._id
     if getGlobalVariable("PermExhausted") != "Start": #Get a list of cards that is perm exhausted
             permExhaustedList = eval(getGlobalVariable("PermExhausted"))
     else:
         permExhaustedList = []
-    
+
     if (len(players) == 3 or len(players) == 4) and getGlobalVariable("VillainChallengeActive") == "False":
         if args.player._id == 1:
             if card.controller == me and card.owner == me and traits == "Dilemma":
