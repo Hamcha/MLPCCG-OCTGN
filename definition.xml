@@ -88,6 +88,7 @@
 		<property name="ProblemPlayerElement2" type="String" />
 		<property name="ProblemPlayerElement2Power" type="String" />
 		<property name="Rarity" type="String" />
+		<size name="problem" width="126" height="176" />
 	</card>
 	
 	<table name="Table" visibility="undefined" ordered="False" width="960" height="540" board="background/background.jpg" background="background/background.jpg" backgroundStyle="uniformToFill">

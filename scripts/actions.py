@@ -1404,9 +1404,9 @@ def setup(group, x = 0, y = 0):
             SelectedStart.orientation ^= Rot270
     else:
         if me.isInverted:
-            SelectedStart.moveToTable(-193,-45)
+            SelectedStart.moveToTable(-193,-90)
         else:               
-            SelectedStart.moveToTable(130,-43)
+            SelectedStart.moveToTable(130,-86)
         
     update()
             
@@ -1702,9 +1702,9 @@ def replaceProblem(card, x = 0, y = 0):
         
         newProblem = me.piles['Problem Deck'][10]
         if me.isInverted:
-            newProblem.moveToTable(-193,-45)
+            newProblem.moveToTable(-193,-90)
         else:               
-            newProblem.moveToTable(130,-43)
+            newProblem.moveToTable(130,-86)
         notify("{} moves {} to the top of their Problem Deck and Replaces it with {} from the bottom of their Problem Deck.".format(me,oldName,newProblem.Name))
         return
         
@@ -1726,9 +1726,9 @@ def replaceProblem(card, x = 0, y = 0):
             newProblem.orientation ^= Rot270
     else:
         if me.isInverted:
-            newProblem.moveToTable(-193,-45)
+            newProblem.moveToTable(-193,-90)
         else:               
-            newProblem.moveToTable(130,-43)
+            newProblem.moveToTable(130,-86)
     notify("{} moves {} to the bottom of their Problem Deck and Replaces it with {}".format(me,oldName,newProblem.Name))
 
 def flipcard(card, x = 0, y = 0):
